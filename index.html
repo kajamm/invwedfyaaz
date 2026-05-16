@@ -37,48 +37,41 @@
     }
     #coverScreen.hidden { opacity: 0; pointer-events: none; }
 
+    /* [1] Cover bg: hitam putih + blur */
     .cover-bg {
       position: absolute;
       inset: 0;
-
-      background:
-        linear-gradient(
-          rgba(15,8,4,0.45),
-          rgba(15,8,4,0.70)
-        ),
-        url('assets/images/Backgroundd.jpg');
-
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: blur(2px);
-      transform: scale(1.02);
+      overflow: hidden;
     }
     .cover-bg img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
-      object-position: center top;
-
-      filter:
-        brightness(0.55)
-        blur(2px);
-
-      transform: scale(1.03);
+      /* [2] Lebih presisi: posisi subjek foto */
+      object-position: 58% center;
+      /* [1] Hitam putih + blur + gelap */
+      filter: grayscale(100%) brightness(0.45) blur(3px);
+      transform: scale(1.0); /* supaya blur tidak makan tepi */
     }
     .cover-bg::after {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 100%);
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.30) 0%,
+        rgba(0,0,0,0.55) 100%
+      );
     }
 
+    /* [4] Cover content: tengah */
     .cover-content {
       position: relative; z-index: 2;
       display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 64px 72px;
-      max-width: 560px;
+      align-items: center;        /* tengah horizontal */
+      justify-content: center;    /* tengah vertikal */
+      text-align: center;         /* teks rata tengah */
+      width: 100%;
+      padding: 64px 48px;
     }
     .cover-content .kecil {
       font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
@@ -117,7 +110,7 @@
     }
     #mainApp.visible { opacity: 1; pointer-events: all; }
 
-    /* LEFT — foto ke-1 sticky */
+    /* LEFT — foto sticky */
     .left-panel {
       width: 58%;
       flex-shrink: 0;
@@ -125,40 +118,41 @@
       top: 0;
       height: 100vh;
       overflow: hidden;
-
-      background:
-        linear-gradient(
-          rgba(15,8,4,0.55),
-          rgba(15,8,4,0.75)
-        ),
-        url('assets/images/Backgroundd.jpg');
-
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
       position: relative;
-      backdrop-filter: blur(2px);
     }
+    /* [3] Foto kiri blur */
     .left-panel img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: brightness(0.6);
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      /* blur + sedikit gelap + saturation rendah untuk kesan soft */
+      filter: brightness(0.55) blur(4px) saturate(0.75);
+      transform: scale(1.0); /* cegah tepi putih karena blur */
+      transition: transform 0.5s ease;
     }
     .left-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(0,0,0,0.35) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.10) 60%);
     }
+    /* [4] Left caption: tengah */
     .left-caption {
-      position: absolute; top: 44px; left: 44px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 100%;
+      padding: 0 32px;
     }
     .left-caption .names {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(26px, 3vw, 42px);
-      font-weight: 300; line-height: 1.1; color: white; opacity: 0.9;
+      font-size: clamp(26px, 3vw, 48px);
+      font-weight: 300; line-height: 1.1; color: white; opacity: 0.95;
     }
     .left-caption .names .amp { color: var(--brown-light); font-size: 0.75em; }
     .left-caption .sub {
       font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--brown-light); margin-top: 10px; opacity: 0.8;
+      color: var(--brown-light); margin-top: 12px; opacity: 0.85;
     }
 
     /* RIGHT — scrollable */
@@ -166,16 +160,11 @@
       width: 42%;
       height: 100vh;
       overflow-y: auto;
-
       background:
-        linear-gradient(
-          rgba(15,8,4,0.04),
-          rgba(15,8,4,0.10)
-        ),
-        url('assets/images/Background.jpg');
-
-      background-size: 43%;
-      background-position: right top;
+        linear-gradient(rgba(15,8,4,0.04), rgba(15,8,4,0.10)),
+        url('assets/images/DalamKanan.jpeg');
+      background-size: 50%;
+      background-position: 110% top;
       background-repeat: no-repeat;
       background-attachment: fixed;
       position: relative;
@@ -192,44 +181,23 @@
     .right-panel::before {
       content: '';
       position: fixed;
-      top: 0;
-      right: 0;
-      width: 42%;
-      height: 100vh;
-
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(15,8,4,0.03),
-          rgba(15,8,4,0.12)
-        );
-
+      top: 0; right: 0;
+      width: 42%; height: 100vh;
+      background: linear-gradient(to bottom, rgba(15,8,4,0.03), rgba(15,8,4,0.12));
       pointer-events: none;
       z-index: 1;
     }
-
     .right-panel::after {
       content: '';
-
       position: fixed;
-      top: 0;
-      right: 0;
-
-      width: 42%;
-      height: 100vh;
-
-      background:
-        linear-gradient(
-          to left,
-          rgba(0,0,0,0.03),
-          transparent
-        );
-
+      top: 0; right: 0;
+      width: 42%; height: 100vh;
+      background: linear-gradient(to left, rgba(0,0,0,0.03), transparent);
       pointer-events: none;
       z-index: 1;
     }
 
-    /* ─── FOTO KE-2: first screen di right panel ─── */
+    /* ─── HERO PHOTO (right panel first screen) ─── */
     .right-hero-photo {
       position: relative; height: 100vh; overflow: hidden;
     }
@@ -245,73 +213,41 @@
         rgba(30,18,9,1) 100%);
     }
 
-    /* Hero teks di atas foto ke-2 */
+    /* Hero overlay */
     .hero-overlay {
       position: absolute;
-
-      top: 0;
-      left: 0;
-
-      width: 58%;
+      top: 0; left: 0;
+      width: 100%;
       height: 100%;
-
       display: flex;
       flex-direction: column;
       justify-content: center;
-
-      padding: 60px;
-
-      background:
-        linear-gradient(
-          to right,
-          rgba(10,5,2,0.58),
-          rgba(10,5,2,0.22),
-          transparent
-        );
-
-      backdrop-filter: blur(2px);
-
+      align-items: center;     /* [4] tengah horizontal */
+      text-align: center;      /* [4] teks rata tengah */
+      padding: 60px 48px;
+      background: linear-gradient(to bottom, rgba(10,5,2,0.30), rgba(10,5,2,0.55));
+      backdrop-filter: blur(1px);
       z-index: 5;
     }
     .hero-tagline {
       font-size: 9px; letter-spacing: 5px; text-transform: uppercase;
-      color: var(--brown-light); margin-bottom: 16px; text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      color: var(--brown-light); margin-bottom: 16px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
     .hero-names {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(34px, 4.2vw, 54px);
-
-      font-weight: 300;
-      line-height: 1.05;
-
-      color: white;
-
-      text-shadow:
-        0 4px 18px rgba(0,0,0,0.45);
-
-      position: relative;
-      z-index: 5;
+      font-weight: 300; line-height: 1.05; color: white;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.45);
     }
-
     .hero-names .amp {
-      color: var(--brown-light);
-      font-size: 0.72em;
+      color: var(--brown-light); font-size: 0.72em;
     }
-
     .hero-sub {
-      font-size: 9px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
       color: rgba(255,255,255,0.75);
-
       margin-top: 10px;
-
-      text-shadow:
-        0 2px 10px rgba(0,0,0,0.35);
-
-      position: relative;
-      z-index: 5;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
 
     /* Countdown */
@@ -343,90 +279,56 @@
     /* ─── SECTIONS ─── */
     .section {
       position: relative;
-
       padding: 60px 44px;
-
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(10,5,2,0.72),
-          rgba(10,5,2,0.58)
-        );
-
+      background: linear-gradient(to bottom, rgba(10,5,2,0.72), rgba(10,5,2,0.58));
       backdrop-filter: blur(4px);
-
       z-index: 3;
     }
-
     .section::before {
       content: '';
-
-      position: absolute;
-      inset: 0;
-
-      background:
-        linear-gradient(
-          to right,
-          rgba(255,255,255,0.02),
-          transparent
-        );
-
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(255,255,255,0.02), transparent);
       pointer-events: none;
     }
-
     .section + .section { border-top: 1px solid rgba(255,255,255,0.06); }
 
     .sec-title {
       font-family: 'Cormorant Garamond', serif;
-
-      font-size: 32px;
-      font-weight: 300;
-
-      color: white;
-
+      font-size: 32px; font-weight: 300; color: white;
       margin-bottom: 14px;
-
-      text-shadow:
-        0 4px 16px rgba(0,0,0,0.35);
+      text-shadow: 0 4px 16px rgba(0,0,0,0.35);
     }
     .sec-desc {
-      font-size: 13px;
-
-      line-height: 2;
-
+      font-size: 13px; line-height: 2;
       color: rgba(255,255,255,0.72);
-
       margin-bottom: 28px;
-
-      text-shadow:
-        0 2px 10px rgba(0,0,0,0.35);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
 
     /* ─── MEMPELAI ─── */
     .couple-card {
+      position: relative;  /* FIX: couple-info pakai position absolute */
       overflow: hidden;
-
       border-radius: 8px;
-
       backdrop-filter: blur(10px);
-
       background: rgba(255,255,255,0.03);
-
       border: 1px solid rgba(255,255,255,0.05);
-
-      box-shadow:
-        0 10px 40px rgba(0,0,0,0.35);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+      margin-bottom: 16px;
     }
     .couple-card img {
-      width: 100%; height: 340px; object-fit: cover;
-      display: block; filter: brightness(0.65);
+      width: 100%; height: 340px;
+      object-fit: cover; object-position: center top;
+      display: block;
+      filter: brightness(0.55) blur(2px) saturate(0.8);
+      transform: scale(1.05);
       transition: transform 0.5s ease;
     }
-    .couple-card:hover img { transform: scale(1.03); }
+    .couple-card:hover img { transform: scale(1.08); }
     .couple-info {
       position: absolute; bottom: 0; left: 0; right: 0;
       padding: 28px 22px 22px;
-      background: linear-gradient(to top, rgba(0,0,0,0.84) 0%, transparent 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
     }
     .couple-info .peran {
       font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
@@ -456,11 +358,13 @@
     .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
     .gallery-grid img {
       width: 100%; height: 180px; object-fit: cover;
-      border-radius: 2px; transition: opacity 0.3s; cursor: pointer;
+      border-radius: 2px;
+      filter: brightness(0.65) saturate(0.85);
+      transition: opacity 0.3s, filter 0.3s; cursor: pointer;
     }
-    .gallery-grid img:hover { opacity: 0.8; }
+    .gallery-grid img:hover { opacity: 0.85; filter: brightness(0.75) saturate(1); }
 
-    /* ─── LOKASI (1 layer, 2 event) ─── */
+    /* ─── LOKASI ─── */
     .lokasi-intro {
       font-size: 12px; color: var(--text-muted); line-height: 1.9; margin-bottom: 30px;
     }
@@ -566,7 +470,7 @@
     .ucapan-card p { font-size: 12px; color: var(--text-muted); line-height: 1.75; }
     @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-    /* ───Wedding Gift─── */
+    /* ─── WEDDING GIFT ─── */
     .angpao-desc { font-size: 12px; color: var(--text-muted); line-height: 1.9; text-align: center; margin-bottom: 22px; }
     .bank-card {
       padding: 18px 20px; margin-bottom: 10px;
@@ -643,86 +547,91 @@
     /* ─── MOBILE ─── */
     @media (max-width: 768px) {
 
-    body { overflow: auto; }
+      body { overflow: auto; }
 
-    #coverScreen { flex-direction: column; }
+      #coverScreen { flex-direction: column; }
 
-    .cover-bg img { object-position: 58% top; }
+      /* [2] Mobile: posisi foto cover lebih presisi */
+      .cover-bg img {
+        object-position: 10% center;
+      }
 
-    .cover-content {
-      padding: 48px 32px;
-      max-width: 100%;
-    }
+      .cover-content {
+        padding: 48px 32px;
+        max-width: 100%;
+      }
 
-    #mainApp {
-      flex-direction: column;
-      height: auto;
-    }
+      #mainApp {
+        flex-direction: column;
+        height: auto;
+      }
 
-    .left-panel { display: none; }
+      .left-panel { display: none; }
 
-    .right-panel {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      background: transparent;
-    }
+      .right-panel {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        background: transparent;
+      }
 
-    .right-panel::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background:
-        linear-gradient(rgba(15,8,4,0.45), rgba(15,8,4,0.70)),
-        url('assets/images/Background.jpg');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      z-index: -1;
-    }
+      .right-panel::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background:
+          linear-gradient(rgba(15,8,4,0.45), rgba(15,8,4,0.70)),
+          url('assets/images/DalamKanan.jpeg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        z-index: -1;
+      }
 
-    .right-panel::after { display: none; }
+      .right-panel::after { display: none; }
 
-    .right-hero-photo {
-      height: 100vh;
-      background: transparent;
-      position: relative;
-    }
+      .right-hero-photo {
+        height: 100vh;
+        background: transparent;
+        position: relative;
+        filter: none;
+        transform: none;
+      }
 
-    .hero-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      padding: 40px 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: rgba(10,5,2,0.35);
-      backdrop-filter: none;
-      z-index: 2;
-    }
+      .hero-overlay {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100vh;
+        padding: 40px 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: rgba(10,5,2,0.40);
+        backdrop-filter: none;
+        z-index: 2;
+      }
 
-    .hero-names { font-size: 56px; line-height: 0.95; }
-    .hero-sub { margin-top: 16px; }
-    .countdown { margin-top: 28px; }
+      .hero-names { font-size: 52px; line-height: 0.95; }
+      .hero-sub { margin-top: 16px; }
+      .countdown { margin-top: 28px; }
 
-    .section,
-    .penutup-section { padding: 50px 26px; }
+      .section,
+      .penutup-section { padding: 50px 26px; }
 
-    .footer { padding: 18px 26px; }
+      .footer { padding: 18px 26px; }
 
-  } /* ← kurung tutup @media di sini, paling bawah */
-
+    } /* ← tutup @media */
   </style>
 </head>
 <body>
 
 <audio id="bgMusic" loop>
-  <source src="assets/music/narnia.mp3" type="audio/mp3">
+  <source src="assets/music/naruna.mp3" type="audio/mp3">
 </audio>
 <div class="toast" id="toast">Terkirim ✓</div>
 <button class="music-btn" id="musicBtn">♫</button>
@@ -730,9 +639,8 @@
 <!-- ══ COVER ══ -->
 <div id="coverScreen">
   <div class="cover-bg">
-    <!-- Foto cover kiri — ganti src sesuai foto Anda -->
     <img
-      src="assets/images/Backgroundd.jpg"
+      src="assets/images/groom.jpg"
       onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#2e1509,#1a0c05)'"
       alt="Cover"
     >
@@ -757,11 +665,10 @@
 <!-- ══ MAIN APP ══ -->
 <div id="mainApp">
 
-  <!-- KIRI — foto ke-1 (sticky) -->
+  <!-- KIRI sticky -->
   <div class="left-panel" style="position:sticky;top:0;height:100vh">
-    <!-- Ganti src dengan foto kiri Anda -->
     <img
-      src="assets/images/Backgroundd.jpg"
+      src="assets/images/DalamKiri.jpeg"
       onerror="this.style.display='none';this.parentElement.style.background='#1a0c05'"
       alt="Foto Kiri"
     >
@@ -776,16 +683,15 @@
     </div>
   </div>
 
-  <!-- KANAN — scrollable -->
+  <!-- KANAN scrollable -->
   <div class="right-panel" id="rightPanel">
 
-    <!-- FOTO KE-2 + Hero Countdown -->
+    <!-- HERO -->
     <div class="right-hero-photo">
-      <!-- Ganti src dengan foto ke-2 Anda (bisa foto couple/prewedding) -->
       <img
-        src="assets/images/hero2.jpg"
+        src="assets/images/DalamKanan.jpeg"
         onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=80'"
-        alt="Foto Kanan"
+        alt="Foto Hero"
       >
       <div class="hero-overlay">
         <p class="hero-tagline">Pernikahan</p>
@@ -821,7 +727,7 @@
       <p class="sec-desc">Kami adalah sepasang manusia yang berbahagia dan mengundang Bapak/Ibu/Saudara/i untuk hadir di hari istimewa kami.</p>
 
       <div class="couple-card">
-        <img src="assets/images/groom.jpg"
+        <img src="assets/images/DalamKiri.jpeg"
           onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80'"
           alt="Pengantin Pria">
         <div class="couple-info">
@@ -859,7 +765,7 @@
       </div>
     </div>
 
-    <!-- CERITA KAMI -->
+    <!-- CERITA -->
     <div class="section fade-up">
       <h2 class="sec-title">Cerita Kami</h2>
       <p class="story-text">
@@ -873,7 +779,7 @@
       </div>
     </div>
 
-    <!-- LOKASI — 1 layer, 2 event ditumpuk -->
+    <!-- LOKASI -->
     <div class="section fade-up">
       <h2 class="sec-title">Lokasi</h2>
       <p class="lokasi-intro">
@@ -892,6 +798,7 @@
             <div>Juni 2026</div>
           </div>
           <div class="event-time">15.00 WIB</div>
+        </div>
         <div class="venue-name">Masjid Salman ITB</div>
         <div class="venue-addr">Jl. Ganesha No.7, Lb. Siliwangi, Kecamatan Coblong,<br>Kota Bandung, Jawa Barat 40132</div>
         <a href="https://maps.app.goo.gl/TFSJwTSTTEDcJog16" target="_blank" class="maps-btn">
@@ -912,7 +819,8 @@
             <div>Jumat</div>
             <div>Juni 2026</div>
           </div>
-        <div class="event-time">18.00 WIB</div>
+          <div class="event-time">18.00 WIB</div>
+        </div>
         <div class="venue-name">Kopi Tahura</div>
         <div class="venue-addr">Taman Hutan Raya Ir. H. Djuanda,<br>Bandung, Jawa Barat</div>
         <a href="https://maps.app.goo.gl/w7BCYsyzb4DFozGs5" target="_blank" class="maps-btn">
@@ -921,8 +829,8 @@
           </svg>
           Buka Google Maps
         </a>
-      </div>
-          <div class="dresscode-box">
+
+        <div class="dresscode-box">
           <div class="dc-title">Dress Code :</div>
           <div class="dc-desc">Kami memohon kehadiran dengan mengenakan warna-warna berikut</div>
           <div class="swatches">
@@ -965,7 +873,7 @@
       </form>
     </div>
 
-    <!-- UCAPAN & DOA -->
+    <!-- UCAPAN -->
     <div class="section fade-up">
       <h2 class="sec-title">Ucapan &amp; Doa</h2>
       <p class="sec-desc">Titipkan ucapan dan doa terbaik untuk kami.</p>
@@ -986,7 +894,7 @@
       </div>
     </div>
 
-    <!-- Wedding Gift -->
+    <!-- WEDDING GIFT -->
     <div class="section fade-up">
       <h2 class="sec-title">Wedding Gift</h2>
       <p class="angpao-desc">Terima kasih atas doa dan hadiah yang diberikan. Bapak/Ibu/Saudara/i dapat mengirimkan hadiah melalui rekening berikut.</p>
@@ -1015,19 +923,18 @@
       HAK CIPTA ©2026 &nbsp;·&nbsp; UNDANGAN INI RAMAH LINGKUNGAN 🌱
     </div>
 
-  </div><!-- /right-panel -->
-</div><!-- /mainApp -->
+  </div>
+</div>
 
 <script>
-  // ── Buka undangan
   document.getElementById('openBtn').addEventListener('click', () => {
     document.getElementById('coverScreen').classList.add('hidden');
     document.getElementById('mainApp').classList.add('visible');
     document.getElementById('bgMusic').play().catch(() => {});
     document.getElementById('musicBtn').classList.add('playing');
+    isPlaying = true;
   });
 
-  // ── Musik
   const music    = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
   let isPlaying  = false;
@@ -1043,7 +950,6 @@
     }
   });
 
-  // ── Countdown
   const target = new Date('June 26, 2026 15:00:00').getTime();
   function tick() {
     const diff = target - Date.now();
@@ -1055,36 +961,26 @@
   }
   tick(); setInterval(tick, 1000);
 
-  // ── RSVP
   document.getElementById('rsvpForm').addEventListener('submit', async e => {
     e.preventDefault();
-
     const data = {
       nama: document.getElementById('rNama').value,
       telp: document.getElementById('rTelp').value,
       tamu: document.getElementById('rTamu').value,
       hadir: document.getElementById('rHadir').value
     };
-
     try {
-
       await fetch('https://script.google.com/macros/s/AKfycbztakZ3ksZMj6OJtR_7HLUgkTMq23h4JPTA0A-PKYSQW5l3K-p3pYiboxw5vrlmBBWOag/exec', {
         method: 'POST',
         body: JSON.stringify(data)
       });
-
       tampilToast('Konfirmasi kehadiran terkirim ✓');
-
       e.target.reset();
-
     } catch (err) {
-
       tampilToast('Gagal mengirim data');
-
     }
   });
 
-  // ── Ucapan
   document.getElementById('wishForm').addEventListener('submit', e => {
     e.preventDefault();
     const nama  = document.getElementById('wNama').value.trim();
@@ -1098,7 +994,6 @@
     e.target.reset();
   });
 
-  // ── Salin nomor rekening
   function salin(nomor, btn) {
     navigator.clipboard.writeText(nomor).then(() => {
       btn.textContent = 'Tersalin!';
@@ -1106,7 +1001,6 @@
     });
   }
 
-  // ── Toast
   function tampilToast(pesan) {
     const t = document.getElementById('toast');
     t.textContent = pesan;
@@ -1114,13 +1008,10 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // ── Fade-up on scroll
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  
 </script>
 </body>
 </html>
