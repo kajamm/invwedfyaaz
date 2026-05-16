@@ -643,108 +643,80 @@
     /* ─── MOBILE ─── */
     @media (max-width: 768px) {
 
+    body { overflow: auto; }
 
-      body {
-        overflow: auto;
-      }
+    #coverScreen { flex-direction: column; }
 
-      #coverScreen {
-        flex-direction: column;
-      }
+    .cover-bg img { object-position: 58% top; }
 
-      .cover-bg img {
-        object-position: 58% top;
-      }
+    .cover-content {
+      padding: 48px 32px;
+      max-width: 100%;
     }
 
-      .cover-content {
-        padding: 48px 32px;
-        max-width: 100%;
-      }
+    #mainApp {
+      flex-direction: column;
+      height: auto;
+    }
 
-      #mainApp {
-        flex-direction: column;
-        height: auto;
-      }
+    .left-panel { display: none; }
 
-      .left-panel {
-        display: none;
-      }
+    .right-panel {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: transparent;
+    }
 
-      .right-panel {
-        position: relative;
-        width: 100%;
-        min-height: 100vh;
-        background: transparent;
-      }
+    .right-panel::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(rgba(15,8,4,0.45), rgba(15,8,4,0.70)),
+        url('assets/images/Background.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      z-index: -1;
+    }
 
-      .right-panel::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
+    .right-panel::after { display: none; }
 
-        background:
-          linear-gradient(
-            rgba(15,8,4,0.45),
-            rgba(15,8,4,0.70)
-          ),
-          url('assets/images/Background.jpg');
+    .right-hero-photo {
+      height: 100vh;
+      background: transparent;
+      position: relative;
+    }
 
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      padding: 40px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(10,5,2,0.35);
+      backdrop-filter: none;
+      z-index: 2;
+    }
 
-        z-index: -1;
-      }
+    .hero-names { font-size: 56px; line-height: 0.95; }
+    .hero-sub { margin-top: 16px; }
+    .countdown { margin-top: 28px; }
 
-      .right-panel::after {
-        display: none;
-      }
+    .section,
+    .penutup-section { padding: 50px 26px; }
 
-      .right-hero-photo {
-        height: 100vh;
-        background: transparent;
-        position: relative;
-      }
+    .footer { padding: 18px 26px; }
 
-      .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        padding: 40px 28px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        background: rgba(10,5,2,0.35);
-        backdrop-filter: none;
-        z-index: 2;
-      }
+  } /* ← kurung tutup @media di sini, paling bawah */
 
-      .hero-names {
-        font-size: 56px;
-        line-height: 0.95;
-      }
-
-      .hero-sub {
-        margin-top: 16px;
-      }
-
-      .countdown {
-        margin-top: 28px;
-      }
-
-      .section,
-      .penutup-section {
-        padding: 50px 26px;
-      }
-
-      .footer {
-        padding: 18px 26px;
-      }
   </style>
 </head>
 <body>
