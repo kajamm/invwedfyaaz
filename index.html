@@ -392,7 +392,7 @@
     }
     .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
     .gallery-grid img {
-      width: 100%; height: 180px; object-fit: cover;
+      width: 100%; height: 190px; object-fit: cover;
       border-radius: 3px;
       filter: brightness(0.60) saturate(0.85);
       transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
@@ -427,15 +427,18 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.40);
     }
     .event-date-row {
+      padding-bottom: 16px;
+      border-bottom: 1px solig rgba(255.255.255.0,07);
+      margin-bottom: 16px; 
       display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;
     }
     .event-day {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 48px; font-weight: 300; color: white; line-height: 1;
+      font-size: 36px; font-weight: 300; color: white; line-height: 1;
       text-shadow: 0 2px 12px rgba(0,0,0,0.40);
     }
     .event-date-meta {
-      font-size: 12px; color: rgba(255,255,255,0.72); line-height: 1.8;
+      font-size: 11px; color: rgba(255,255,255,0.80); line-height: 1.8;
     }
     .event-time {
       font-size: 13px; color: var(--brown-light); margin-left: auto; font-weight: 400;
@@ -520,7 +523,14 @@
     }
 
     /* ── UCAPAN ── */
-    .ucapan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
+    .ucapan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; max-height: 340px; overflow-y: auto; padding-right: 6px; }
+    .ucapan-list::-webkit-scrollbar { width: 3px; }
+    .ucapan-list::-webkit-scrollbar-track { background: transparent;}
+    .ucapan-list::-webkit-scrollbar-thumb { background: var(--brown-accent); border-radius: 10px;}
+    .ucapan-list::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.3);
+      border-radius: 2px;
+    }
     .ucapan-card {
       padding: 16px 18px;
       background: rgba(255,255,255,0.06);
@@ -795,14 +805,14 @@
       <p class="sec-desc">Kami adalah sepasang manusia yang berbahagia dan mengundang Bapak/Ibu/Saudara/i untuk hadir di hari istimewa kami.</p>
 
       <div class="couple-card">
-        <img src="assets/images/DalamKiri.jpeg"
+        <img src="assets/images/CPP.jpeg"
           onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80'"
           alt="Pengantin Pria">
         <div class="couple-info">
           <div class="peran">Pengantin Pria</div>
-          <h3>Azzam Abdullah Umar</h3>
-          <p class="ortu">Putra dari Bapak &amp; Ibu</p>
-          <a href="https://instagram.com" target="_blank" class="ig-link">
+          <h3>Azzam Abdulloh Umar</h3>
+          <p class="ortu">Putra dari Bapak Umar Yusuf &amp; Ibu Novi Sari Sumarni</p>
+          <a href="https://www.instagram.com/azzam.au_/" target="_blank" class="ig-link">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="2" y="2" width="20" height="20" rx="5"/>
               <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
@@ -814,14 +824,14 @@
       </div>
 
       <div class="couple-card">
-        <img src="assets/images/bride.jpg"
-          onerror="this.src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80'"
+        <img src="assets/images/CPWw.jpeg"
+          style="object-position: center 8%; transform: scale(1.0);" onerror="this.src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80'"
           alt="Pengantin Wanita">
         <div class="couple-info">
           <div class="peran">Pengantin Wanita</div>
           <h3>Firyal Syafira Nachdah</h3>
-          <p class="ortu">Putri dari Bapak &amp; Ibu</p>
-          <a href="https://instagram.com" target="_blank" class="ig-link">
+          <p class="ortu">Putri dari Bapak Rachman Prihatna &amp; Ibu Mera merliana</p>
+          <a href="https://www.instagram.com/firyalsyafiraan/" target="_blank" class="ig-link">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="2" y="2" width="20" height="20" rx="5"/>
               <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
@@ -840,10 +850,10 @@
         Cinta tidak kenal waktu, kondisimu, berapa usiamu, dan siapa kamu. Cinta adalah pendeskripsian yang tidak ada habisnya. Cinta bukan apa-apa bagi yang tidak pernah merasakan, sebab ia hanya sebuah kata — mudah diucap, namun tidak mudah untuk dijelaskan. Cinta itu yang kami rasakan. Cinta itulah asal mula dari segalanya.
       </p>
       <div class="gallery-grid">
-        <img src="assets/images/story1.jpg" onerror="this.src='https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80'" alt="">
-        <img src="assets/images/story2.jpg" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80'" alt="">
-        <img src="assets/images/story3.jpg" onerror="this.src='https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=600&q=80'" alt="">
-        <img src="assets/images/story4.jpg" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80'" alt="">
+        <img src="assets/images/_MG_0645.jpg" style="object-position: center top;" transform: scale(1.3); onerror="this.src='https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80'" alt="">
+        <img src="assets/images/_MG_0611.jpeg" style="object-position: center top;" transform: scale(0.4); onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80'" alt="">
+        <img src="assets/images/_MG_0662.jpeg" style="object-position: center 50%;" transform: scale(0.5); onerror="this.src='https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=600&q=80'" alt="">
+        <img src="assets/images/_MG_0648.jpg" style="object-position: center top;" transform: scale(1.3); onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80'" alt="">
       </div>
     </div>
 
@@ -964,16 +974,16 @@
       <h2 class="sec-title">Wedding Gift</h2>
       <p class="angpao-desc">Terima kasih atas doa dan hadiah yang diberikan. Bapak/Ibu/Saudara/i dapat mengirimkan hadiah melalui rekening berikut.</p>
       <div class="bank-card">
-        <div class="bank-nama">Bank BCA</div>
-        <div class="bank-nomor">1234 5678 90</div>
+        <div class="bank-nama">Bank Mandiri</div>
+        <div class="bank-nomor">700011926529</div>
         <div class="bank-atas">a.n. Azzam Abdullah Umar</div>
-        <button class="salin-btn" onclick="salin('1234567890', this)">Salin Nomor</button>
+        <button class="salin-btn" onclick="salin('700011926529', this)">Salin Nomor</button>
       </div>
       <div class="bank-card">
-        <div class="bank-nama">Bank Mandiri</div>
-        <div class="bank-nomor">0987 6543 21</div>
+        <div class="bank-nama">BLU BY BCA DIGITAL</div>
+        <div class="bank-nomor">0039 4673 2576</div>
         <div class="bank-atas">a.n. Firyal Syafira Nachdah</div>
-        <button class="salin-btn" onclick="salin('0987654321', this)">Salin Nomor</button>
+        <button class="salin-btn" onclick="salin('003946732576', this)">Salin Nomor</button>
       </div>
     </div>
 
@@ -985,7 +995,7 @@
     </div>
 
     <div class="footer">
-      HAK CIPTA ©2026 &nbsp;·&nbsp; UNDANGAN INI RAMAH LINGKUNGAN 🌱
+      ©2026 Azzam & Firyal &nbsp;·&nbsp; All Rights Reserved
     </div>
 
   </div>
@@ -1026,7 +1036,7 @@
   }
   tick(); setInterval(tick, 1000);
 
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkFdRgpRkS74c2nqslXAqciKZEnpC7xbOl81AZwRSXgVTyH-b-Db3FsRk8TxWCIJiudQ/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw31zbQVmCgpMMHLSBWbRG02xV9DeeppErLM5-M1Vf60LOKjMZ81B1AybWfr9bCLsJZbg/exec';
 
     // RSVP — tidak berubah, cuma pindah pakai SCRIPT_URL
     document.getElementById('rsvpForm').addEventListener('submit', async e => {
@@ -1055,7 +1065,7 @@
       try {
         await fetch(SCRIPT_URL, {
           method: 'POST',
-          body: JSON.stringify({ type: 'ucapan', nama, pesan })
+          body: JSON.stringify({ type: 'Wishes', nama, pesan })
         });
         tampilToast('Ucapan terkirim ✓');
         e.target.reset();
@@ -1078,6 +1088,8 @@
           card.innerHTML = `<h4>${item.nama}</h4><p>${item.pesan}</p>`;
           list.appendChild(card);
         });
+        list.scrollTop = 0;
+
       } catch (err) {
         console.log('Gagal load ucapan:', err);
       }
