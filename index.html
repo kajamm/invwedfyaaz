@@ -1026,38 +1026,64 @@
   }
   tick(); setInterval(tick, 1000);
 
-  document.getElementById('rsvpForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const data = {
-      nama: document.getElementById('rNama').value,
-      telp: document.getElementById('rTelp').value,
-      tamu: document.getElementById('rTamu').value,
-      hadir: document.getElementById('rHadir').value
-    };
-    try {
-      await fetch('https://script.google.com/macros/s/AKfycbztakZ3ksZMj6OJtR_7HLUgkTMq23h4JPTA0A-PKYSQW5l3K-p3pYiboxw5vrlmBBWOag/exec', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
-      tampilToast('Konfirmasi kehadiran terkirim ✓');
-      e.target.reset();
-    } catch (err) {
-      tampilToast('Gagal mengirim data');
-    }
-  });
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkFdRgpRkS74c2nqslXAqciKZEnpC7xbOl81AZwRSXgVTyH-b-Db3FsRk8TxWCIJiudQ/exec';
 
-  document.getElementById('wishForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const nama  = document.getElementById('wNama').value.trim();
-    const pesan = document.getElementById('wPesan').value.trim();
-    if (!nama || !pesan) return;
-    const card = document.createElement('div');
-    card.className = 'ucapan-card';
-    card.innerHTML = `<h4>${nama}</h4><p>${pesan}</p>`;
-    document.getElementById('ucapanList').prepend(card);
-    tampilToast('Ucapan terkirim ✓');
-    e.target.reset();
-  });
+    // RSVP — tidak berubah, cuma pindah pakai SCRIPT_URL
+    document.getElementById('rsvpForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const data = {
+        nama: document.getElementById('rNama').value,
+        telp: document.getElementById('rTelp').value,
+        tamu: document.getElementById('rTamu').value,
+        hadir: document.getElementById('rHadir').value
+      };
+      try {
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+        tampilToast('Konfirmasi kehadiran terkirim ✓');
+        e.target.reset();
+      } catch (err) {
+        tampilToast('Gagal mengirim data');
+      }
+    });
+
+    // UCAPAN — sekarang simpan ke sheet & load dari sheet
+    document.getElementById('wishForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const nama  = document.getElementById('wNama').value.trim();
+      const pesan = document.getElementById('wPesan').value.trim();
+      if (!nama || !pesan) return;
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ type: 'ucapan', nama, pesan })
+        });
+        tampilToast('Ucapan terkirim ✓');
+        e.target.reset();
+        loadUcapan(); // refresh list setelah kirim
+      } catch (err) {
+        tampilToast('Gagal mengirim ucapan');
+      }
+    });
+
+    // Load ucapan dari sheet saat halaman dibuka
+    async function loadUcapan() {
+      try {
+        const res = await fetch(SCRIPT_URL);
+        const data = await res.json();
+        const list = document.getElementById('ucapanList');
+        list.innerHTML = '';
+        data.reverse().forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'ucapan-card';
+          card.innerHTML = `<h4>${item.nama}</h4><p>${item.pesan}</p>`;
+          list.appendChild(card);
+        });
+      } catch (err) {
+        console.log('Gagal load ucapan:', err);
+      }
+    }
+
+    loadUcapan(); // panggil saat pertama buka
 
   function salin(nomor, btn) {
     navigator.clipboard.writeText(nomor).then(() => {
