@@ -652,6 +652,38 @@
     }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.45);
+      font-size: 8px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: scrollBounce 2s infinite;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+      animation: scrollLine 2s infinite;
+    }
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+    }
+    @keyframes scrollBounce {
+      0%, 100% { opacity: 0.45; }
+      50%       { opacity: 0.85; }
+    }
+
+
     /* ═══════════════════════════════════════
        MOBILE
     ═══════════════════════════════════════ */
@@ -705,10 +737,14 @@
 
       .section, .penutup-section { padding: 52px 26px; }
       .footer { padding: 18px 26px; }
+      
     }
+
+    
   </style>
 </head>
 <body>
+  <canvas id="snow" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;"></canvas>
 
 <audio id="bgMusic" loop>
   <source src="assets/music/narnia.mp3" type="audio/mp3">
@@ -799,6 +835,9 @@
           </svg>
           Simpan Tanggal
         </a>
+          <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+                </div>
       </div>
     </div>
 
@@ -1005,11 +1044,21 @@
 </div>
 
 <script>
-  document.getElementById('openBtn').addEventListener('click', () => {
+    document.getElementById('openBtn').addEventListener('click', () => {
     document.getElementById('coverScreen').classList.add('hidden');
     document.getElementById('mainApp').classList.add('visible');
     document.getElementById('bgMusic').play().catch(() => {});
     document.getElementById('musicBtn').classList.add('playing');
+    // Musik mati saat tab ditinggal / browser ditutup
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        music.pause();
+        isPlaying = false;
+        musicBtn.textContent = '▶';
+        musicBtn.classList.remove('playing');
+      }
+    });
+
     isPlaying = true;
   });
 
@@ -1118,6 +1167,48 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  // ─── SNOW EFFECT ───
+  const canvas = document.getElementById('snow');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+  const snowflakes = Array.from({ length: 80 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2.5 + 0.5,      // ukuran butiran
+      speed: Math.random() * 0.8 + 0.3,  // kecepatan jatuh
+      wind: Math.random() * 0.4 - 0.2,   // angin kiri/kanan
+      opacity: Math.random() * 0.5 + 0.2 // transparansi
+    }));
+
+  function drawSnow() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+      snowflakes.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+        ctx.fill();
+
+        s.y += s.speed;
+        s.x += s.wind;
+
+        // reset ke atas jika sudah keluar layar
+        if (s.y > canvas.height) {
+          s.y = -5;
+          s.x = Math.random() * canvas.width;
+        }
+        if (s.x > canvas.width) s.x = 0;
+        if (s.x < 0) s.x = canvas.width;
+      });
+      requestAnimationFrame(drawSnow);
+    }
+drawSnow();
 </script>
 </body>
 </html>
