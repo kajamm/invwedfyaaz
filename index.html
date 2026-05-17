@@ -16,8 +16,8 @@
       --brown-accent: #8a6a50;
       --brown-light: #c4a882;
       --cream: #f5efe6;
-      --text-light: rgba(255,255,255,0.88);
-      --text-muted: rgba(255,255,255,0.48);
+      --text-light: rgba(255,255,255,0.92);
+      --text-muted: rgba(255,255,255,0.62);
     }
 
     html { scroll-behavior: smooth; }
@@ -29,306 +29,339 @@
       overflow: hidden;
     }
 
-    /* ─── COVER SCREEN ─── */
+    /* ═══════════════════════════════════════
+       COVER SCREEN — [1] hitam putih + blur
+       ─ [2] posisi foto presisi
+    ═══════════════════════════════════════ */
     #coverScreen {
       position: fixed; inset: 0; z-index: 100;
-      display: flex; background: #100a04;
-      transition: opacity 0.9s ease;
-    }
-    #coverScreen.hidden { opacity: 0; pointer-events: none; }
+      display: flex;
+      background: #0d0806;
 
-    /* [1] Cover bg: hitam putih + blur */
+      /* [1] Fade-out transisi saat ditutup */
+      transition: opacity 1.1s cubic-bezier(.4,0,.2,1),
+                  transform 1.1s cubic-bezier(.4,0,.2,1);
+    }
+    #coverScreen.hidden {
+      opacity: 0;
+      transform: scale(1.03);
+      pointer-events: none;
+    }
+
     .cover-bg {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
+      position: absolute; inset: 0; overflow: hidden;
     }
     .cover-bg img {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
-      /* [2] Lebih presisi: posisi subjek foto */
-      object-position: 58% center;
-      /* [1] Hitam putih + blur + gelap */
-      filter: grayscale(100%) brightness(0.45) blur(3px);
-      transform: scale(1.0); /* supaya blur tidak makan tepi */
+      /* [2] posisi presisi — subjek foto di sepertiga kiri */
+      object-position: 42% center;
+      /* [1] hitam-putih + blur + gelap */
+      filter: grayscale(100%) brightness(0.38) blur(2.5px);
+      transform: scale(1.05);
+      /* [1] transisi keluar yang halus */
+      transition: filter 0.5s ease;
     }
     .cover-bg::after {
       content: '';
       position: absolute; inset: 0;
       background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.30) 0%,
-        rgba(0,0,0,0.55) 100%
+        160deg,
+        rgba(0,0,0,0.18) 0%,
+        rgba(0,0,0,0.60) 100%
       );
     }
 
-    /* [4] Cover content: tengah */
+    /* [4] Cover content — benar-benar tengah */
     .cover-content {
       position: relative; z-index: 2;
       display: flex; flex-direction: column;
-      align-items: center;        /* tengah horizontal */
-      justify-content: center;    /* tengah vertikal */
-      text-align: center;         /* teks rata tengah */
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       width: 100%;
       padding: 64px 48px;
+
+      /* [1] fade-in saat halaman load */
+      animation: coverFadeIn 1.2s ease both;
     }
+    @keyframes coverFadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .cover-content .kecil {
       font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
       color: var(--brown-light); margin-bottom: 28px;
+      /* teks lebih terbaca di atas bg gelap */
+      text-shadow: 0 1px 8px rgba(0,0,0,0.7);
+      animation: coverFadeIn 1.2s 0.15s ease both;
     }
     .cover-content h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(44px, 5.5vw, 72px);
-      font-weight: 300; line-height: 1.05; color: white;
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 300; line-height: 1.0; color: white;
+      /* teks lebih terbaca */
+      text-shadow: 0 4px 24px rgba(0,0,0,0.65);
+      animation: coverFadeIn 1.2s 0.3s ease both;
     }
     .cover-content h1 .amp {
-      display: block; font-size: 0.72em;
-      color: var(--brown-light); margin: 6px 0;
+      display: block; font-size: 0.68em;
+      color: var(--brown-light); margin: 8px 0;
     }
     .cover-content .tanggal {
-      font-size: 11px; letter-spacing: 3px;
-      color: var(--text-muted); margin-top: 20px;
+      font-size: 11px; letter-spacing: 4px;
+      color: rgba(255,255,255,0.60);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+      margin-top: 22px;
+      animation: coverFadeIn 1.2s 0.45s ease both;
     }
     .buka-btn {
       display: inline-flex; align-items: center; gap: 10px;
-      margin-top: 44px; padding: 13px 32px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.25);
+      margin-top: 48px; padding: 14px 36px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.30);
       border-radius: 40px; color: white;
       font-family: 'Jost', sans-serif;
       font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      cursor: pointer; transition: all 0.3s; width: fit-content;
+      cursor: pointer;
+      /* [1] transisi hover halus */
+      transition: background 0.35s ease, transform 0.35s ease,
+                  border-color 0.35s ease;
+      width: fit-content;
+      animation: coverFadeIn 1.2s 0.6s ease both;
     }
-    .buka-btn:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
+    .buka-btn:hover {
+      background: rgba(255,255,255,0.20);
+      border-color: rgba(255,255,255,0.50);
+      transform: translateY(-3px);
+    }
 
-    /* ─── MAIN LAYOUT ─── */
+    /* ═══════════════════════════════════════
+       MAIN LAYOUT
+    ═══════════════════════════════════════ */
     #mainApp {
       display: flex; height: 100vh;
       opacity: 0; pointer-events: none;
-      transition: opacity 0.9s ease 0.4s;
+      /* [1] fade-in setelah cover pergi */
+      transition: opacity 1.0s ease 0.35s;
     }
     #mainApp.visible { opacity: 1; pointer-events: all; }
 
-    /* LEFT — foto sticky */
+    /* ── LEFT PANEL — [3] foto blur mewah ── */
     .left-panel {
       width: 58%;
       flex-shrink: 0;
-      position: sticky;
-      top: 0;
+      position: sticky; top: 0;
       height: 100vh;
       overflow: hidden;
       position: relative;
     }
-    /* [3] Foto kiri blur */
+    /* [3] Blur lebih dramatis + gelap + saturation rendah */
     .left-panel img {
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center center;
-      /* blur + sedikit gelap + saturation rendah untuk kesan soft */
-      filter: brightness(0.55) blur(4px) saturate(0.75);
-      transform: scale(1.0); /* cegah tepi putih karena blur */
-      transition: transform 0.5s ease;
+      filter: brightness(0.42) blur(5px) saturate(0.65);
+      transform: scale(1.08);
+      transition: transform 0.6s ease, filter 0.6s ease;
     }
     .left-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.10) 60%);
+      /* gradient dari kiri gelap → kanan sedikit transparan */
+      background: linear-gradient(
+        120deg,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.20) 60%,
+        rgba(0,0,0,0.05) 100%
+      );
     }
-    /* [4] Left caption: tengah */
+
+    /* [4] Left caption: benar-benar tengah */
     .left-caption {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       width: 100%;
-      padding: 0 32px;
+      padding: 0 40px;
     }
     .left-caption .names {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(26px, 3vw, 48px);
-      font-weight: 300; line-height: 1.1; color: white; opacity: 0.95;
+      font-size: clamp(28px, 3.2vw, 52px);
+      font-weight: 300; line-height: 1.1; color: white; opacity: 0.96;
+      /* [2] teks terbaca di blur bg */
+      text-shadow: 0 4px 20px rgba(0,0,0,0.70);
     }
     .left-caption .names .amp { color: var(--brown-light); font-size: 0.75em; }
     .left-caption .sub {
       font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--brown-light); margin-top: 12px; opacity: 0.85;
+      color: var(--brown-light); margin-top: 14px; opacity: 0.90;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.60);
     }
 
-    /* RIGHT — scrollable */
+    /* ── RIGHT PANEL — scrollable ── */
     .right-panel {
       width: 42%;
       height: 100vh;
       overflow-y: auto;
       background:
-        linear-gradient(rgba(15,8,4,0.04), rgba(15,8,4,0.10)),
+        linear-gradient(rgba(10,5,2,0.70), rgba(10,5,2,0.75)),
         url('assets/images/DalamKanan.jpeg');
-      background-size: 50%;
-      background-position: 110% top;
+      background-size: 45%;
+      background-position: 100% top;
       background-repeat: no-repeat;
       background-attachment: fixed;
       position: relative;
     }
     .right-panel::-webkit-scrollbar { width: 0; }
-    .section,
-    .penutup-section,
-    .footer {
-      background: transparent;
-      position: relative;
-      z-index: 2;
+
+    .section, .penutup-section, .footer {
+      position: relative; z-index: 2;
     }
 
-    .right-panel::before {
-      content: '';
-      position: fixed;
-      top: 0; right: 0;
-      width: 42%; height: 100vh;
-      background: linear-gradient(to bottom, rgba(15,8,4,0.03), rgba(15,8,4,0.12));
-      pointer-events: none;
-      z-index: 1;
-    }
-    .right-panel::after {
-      content: '';
-      position: fixed;
-      top: 0; right: 0;
-      width: 42%; height: 100vh;
-      background: linear-gradient(to left, rgba(0,0,0,0.03), transparent);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* ─── HERO PHOTO (right panel first screen) ─── */
+    /* ── HERO PHOTO (right panel first screen) ── */
     .right-hero-photo {
       position: relative; height: 100vh; overflow: hidden;
     }
-    .right-hero-photo img {
-      display: none;
-    }
+    .right-hero-photo img { display: none; }
     .right-hero-photo::after {
       content: '';
       position: absolute; inset: 0;
       background: linear-gradient(to bottom,
-        rgba(30,18,9,0.1) 0%,
-        rgba(30,18,9,0.7) 65%,
-        rgba(30,18,9,1) 100%);
+        rgba(10,5,2,0.08) 0%,
+        rgba(10,5,2,0.65) 60%,
+        rgba(10,5,2,1) 100%);
     }
 
-    /* Hero overlay */
+    /* [4] Hero overlay: flex tengah */
     .hero-overlay {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;     /* [4] tengah horizontal */
-      text-align: center;      /* [4] teks rata tengah */
+      align-items: center;    /* [4] tengah horizontal */
+      text-align: center;     /* [4] teks rata tengah */
       padding: 60px 48px;
-      background: linear-gradient(to bottom, rgba(10,5,2,0.30), rgba(10,5,2,0.55));
-      backdrop-filter: blur(1px);
+      /* backdrop sedikit untuk keterbacaan */
+      background: rgba(8,4,2,0.30);
       z-index: 5;
     }
     .hero-tagline {
       font-size: 9px; letter-spacing: 5px; text-transform: uppercase;
-      color: var(--brown-light); margin-bottom: 16px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      color: var(--brown-light); margin-bottom: 18px;
+      /* [2] teks terbaca */
+      text-shadow: 0 2px 12px rgba(0,0,0,0.60);
     }
     .hero-names {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(34px, 4.2vw, 54px);
-      font-weight: 300; line-height: 1.05; color: white;
-      text-shadow: 0 4px 18px rgba(0,0,0,0.45);
+      font-size: clamp(38px, 4.5vw, 60px);
+      font-weight: 300; line-height: 1.0; color: white;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.65);
     }
-    .hero-names .amp {
-      color: var(--brown-light); font-size: 0.72em;
-    }
+    .hero-names .amp { color: var(--brown-light); font-size: 0.70em; }
     .hero-sub {
       font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-      margin-top: 10px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.80);
+      margin-top: 12px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.55);
     }
 
     /* Countdown */
-    .countdown { display: flex; gap: 0; margin-top: 32px; }
+    .countdown { display: flex; gap: 0; margin-top: 34px; }
     .citem {
       flex: 1; text-align: center; padding: 14px 6px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      /* [2] sedikit glass agar angka terbaca */
+      background: rgba(0,0,0,0.28);
+      backdrop-filter: blur(4px);
     }
     .citem + .citem { border-left: none; }
     .citem .num {
       font-family: 'Cormorant Garamond', serif;
       font-size: 30px; font-weight: 300; display: block; color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.50);
     }
     .citem .lbl {
       font-size: 7px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--text-muted); margin-top: 3px;
+      color: rgba(255,255,255,0.58); margin-top: 3px;
     }
     .simpan-btn {
       display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 22px; padding: 10px 22px;
-      border: 1px solid rgba(255,255,255,0.18); border-radius: 40px;
-      background: transparent; color: var(--text-light);
+      margin-top: 24px; padding: 11px 24px;
+      border: 1px solid rgba(255,255,255,0.22); border-radius: 40px;
+      background: rgba(0,0,0,0.30); color: rgba(255,255,255,0.88);
       font-family: 'Jost', sans-serif; font-size: 10px;
       letter-spacing: 2px; text-transform: uppercase;
-      text-decoration: none; transition: all 0.3s; width: fit-content;
+      text-decoration: none;
+      transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+      width: fit-content;
     }
-    .simpan-btn:hover { background: rgba(255,255,255,0.08); }
+    .simpan-btn:hover {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.40);
+      transform: translateY(-2px);
+    }
 
-    /* ─── SECTIONS ─── */
+    /* ═══════════════════════════════════════
+       SECTIONS — [2] teks lebih terbaca
+    ═══════════════════════════════════════ */
     .section {
-      position: relative;
-      padding: 60px 44px;
-      background: linear-gradient(to bottom, rgba(10,5,2,0.72), rgba(10,5,2,0.58));
-      backdrop-filter: blur(4px);
-      z-index: 3;
+      padding: 64px 44px;
+      /* [2] overlay gelap + blur agar konten terbaca */
+      background: rgba(8,4,2,0.72);
+      backdrop-filter: blur(6px);
+      position: relative; z-index: 3;
     }
-    .section::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(255,255,255,0.02), transparent);
-      pointer-events: none;
+    .section + .section {
+      border-top: 1px solid rgba(255,255,255,0.07);
     }
-    .section + .section { border-top: 1px solid rgba(255,255,255,0.06); }
 
     .sec-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px; font-weight: 300; color: white;
-      margin-bottom: 14px;
-      text-shadow: 0 4px 16px rgba(0,0,0,0.35);
+      font-size: 34px; font-weight: 300; color: white;
+      margin-bottom: 12px;
+      text-shadow: 0 3px 14px rgba(0,0,0,0.50);
     }
+    /* [2] desc lebih terang & jelas */
     .sec-desc {
-      font-size: 13px; line-height: 2;
-      color: rgba(255,255,255,0.72);
+      font-size: 13px; line-height: 2.0;
+      color: rgba(255,255,255,0.80);
       margin-bottom: 28px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
 
-    /* ─── MEMPELAI ─── */
+    /* ── MEMPELAI ── */
     .couple-card {
-      position: relative;  /* FIX: couple-info pakai position absolute */
-      overflow: hidden;
-      border-radius: 8px;
-      backdrop-filter: blur(10px);
+      position: relative; overflow: hidden;
+      border-radius: 6px;
       background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
       margin-bottom: 16px;
+      /* [1] hover transisi halus */
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .couple-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
     }
     .couple-card img {
       width: 100%; height: 340px;
       object-fit: cover; object-position: center top;
       display: block;
-      filter: brightness(0.55) blur(2px) saturate(0.8);
+      filter: brightness(0.48) blur(2px) saturate(0.75);
       transform: scale(1.05);
-      transition: transform 0.5s ease;
+      transition: transform 0.5s ease, filter 0.5s ease;
     }
-    .couple-card:hover img { transform: scale(1.08); }
+    .couple-card:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.55) blur(1.5px) saturate(0.85);
+    }
     .couple-info {
       position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 28px 22px 22px;
-      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
+      padding: 30px 22px 22px;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.0) 100%);
     }
     .couple-info .peran {
       font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
@@ -336,43 +369,51 @@
     }
     .couple-info h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 20px; font-weight: 300; color: white;
+      font-size: 21px; font-weight: 300; color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.60);
     }
     .couple-info .ortu {
-      font-size: 11px; color: var(--text-muted); margin-top: 5px; line-height: 1.6;
+      font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 5px; line-height: 1.6;
     }
     .ig-link {
       display: inline-flex; align-items: center; gap: 6px;
       margin-top: 10px; padding: 5px 13px;
-      border: 1px solid rgba(255,255,255,0.18); border-radius: 20px;
-      font-size: 10px; color: var(--text-light); text-decoration: none;
-      transition: all 0.3s;
+      border: 1px solid rgba(255,255,255,0.20); border-radius: 20px;
+      font-size: 10px; color: rgba(255,255,255,0.88); text-decoration: none;
+      transition: background 0.3s ease;
     }
-    .ig-link:hover { background: rgba(255,255,255,0.1); }
+    .ig-link:hover { background: rgba(255,255,255,0.12); }
 
-    /* ─── CERITA ─── */
+    /* ── CERITA ── */
+    /* [2] story text lebih terbaca */
     .story-text {
-      font-size: 12px; line-height: 2.1; color: var(--text-muted);
-      font-style: italic; margin-bottom: 22px;
+      font-size: 13px; line-height: 2.2; color: rgba(255,255,255,0.78);
+      font-style: italic; margin-bottom: 24px;
     }
     .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
     .gallery-grid img {
       width: 100%; height: 180px; object-fit: cover;
-      border-radius: 2px;
-      filter: brightness(0.65) saturate(0.85);
-      transition: opacity 0.3s, filter 0.3s; cursor: pointer;
+      border-radius: 3px;
+      filter: brightness(0.60) saturate(0.85);
+      transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
+      cursor: pointer;
     }
-    .gallery-grid img:hover { opacity: 0.85; filter: brightness(0.75) saturate(1); }
+    .gallery-grid img:hover {
+      opacity: 0.90;
+      filter: brightness(0.72) saturate(1.1);
+      transform: scale(1.02);
+    }
 
-    /* ─── LOKASI ─── */
+    /* ── LOKASI ── */
+    /* [2] intro lebih terbaca */
     .lokasi-intro {
-      font-size: 12px; color: var(--text-muted); line-height: 1.9; margin-bottom: 30px;
+      font-size: 13px; color: rgba(255,255,255,0.78); line-height: 2.0; margin-bottom: 30px;
     }
-    .lokasi-intro strong { color: white; }
+    .lokasi-intro strong { color: white; font-weight: 400; }
 
     .event-block {
       margin-bottom: 30px; padding-bottom: 30px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .event-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
@@ -382,24 +423,30 @@
     }
     .event-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 24px; font-weight: 300; color: white; margin-bottom: 14px;
+      font-size: 26px; font-weight: 300; color: white; margin-bottom: 14px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.40);
     }
     .event-date-row {
       display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;
     }
     .event-day {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 44px; font-weight: 300; color: white; line-height: 1;
+      font-size: 48px; font-weight: 300; color: white; line-height: 1;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.40);
     }
-    .event-date-meta { font-size: 11px; color: var(--text-muted); line-height: 1.8; }
-    .event-time { font-size: 12px; color: var(--brown-light); margin-left: auto; }
+    .event-date-meta {
+      font-size: 12px; color: rgba(255,255,255,0.72); line-height: 1.8;
+    }
+    .event-time {
+      font-size: 13px; color: var(--brown-light); margin-left: auto; font-weight: 400;
+    }
 
     .dresscode-box {
       background: var(--cream); color: #333;
-      border-radius: 3px; padding: 18px 18px 14px; margin: 16px 0;
+      border-radius: 4px; padding: 18px 18px 14px; margin: 16px 0;
     }
     .dc-title { font-size: 11px; font-weight: 500; margin-bottom: 3px; }
-    .dc-desc { font-size: 11px; color: #999; margin-bottom: 12px; }
+    .dc-desc { font-size: 11px; color: #888; margin-bottom: 12px; }
     .swatches { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
     .sw { width: 18px; height: 18px; border-radius: 50%; }
     .dc-note { font-size: 11px; color: #777; }
@@ -407,225 +454,246 @@
 
     .venue-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 19px; font-weight: 300; margin-bottom: 5px;
+      font-size: 20px; font-weight: 300; margin-bottom: 5px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.35);
     }
-    .venue-addr { font-size: 11px; color: var(--text-muted); line-height: 1.7; margin-bottom: 14px; }
+    .venue-addr {
+      font-size: 12px; color: rgba(255,255,255,0.68); line-height: 1.8; margin-bottom: 14px;
+    }
     .maps-btn {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 10px 20px;
-      background: rgba(138,106,80,0.15);
+      padding: 10px 22px;
+      background: rgba(138,106,80,0.18);
       border: 1px solid var(--brown-accent);
       border-radius: 40px; color: var(--brown-light);
       font-size: 11px; letter-spacing: 1px; text-decoration: none;
-      transition: all 0.3s;
+      transition: background 0.3s ease, transform 0.3s ease;
     }
-    .maps-btn:hover { background: rgba(138,106,80,0.3); }
+    .maps-btn:hover { background: rgba(138,106,80,0.35); transform: translateY(-2px); }
 
-    /* ─── RSVP ─── */
+    /* ── RSVP ── */
     .form-group { margin-bottom: 11px; }
     .form-group input, .form-group select {
       width: 100%; padding: 13px 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 3px; color: white;
-      font-family: 'Jost', sans-serif; font-size: 12px;
-      transition: border-color 0.3s;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 4px; color: white;
+      font-family: 'Jost', sans-serif; font-size: 13px;
+      transition: border-color 0.3s ease, background 0.3s ease;
     }
-    .form-group input::placeholder { color: var(--text-muted); }
+    .form-group input::placeholder { color: rgba(255,255,255,0.45); }
     .form-group input:focus, .form-group select:focus {
       outline: none; border-color: var(--brown-accent);
+      background: rgba(255,255,255,0.10);
     }
     .form-group select { appearance: none; -webkit-appearance: none; }
     .form-group select option { background: #2e1f14; color: white; }
-    .form-group select:invalid { color: var(--text-muted); }
+    .form-group select:invalid { color: rgba(255,255,255,0.45); }
     .form-group textarea {
       width: 100%; padding: 13px 16px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 3px; color: white;
-      font-family: 'Jost', sans-serif; font-size: 12px;
-      min-height: 100px; resize: vertical; transition: border-color 0.3s;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 4px; color: white;
+      font-family: 'Jost', sans-serif; font-size: 13px;
+      min-height: 100px; resize: vertical;
+      transition: border-color 0.3s ease, background 0.3s ease;
     }
-    .form-group textarea::placeholder { color: var(--text-muted); }
-    .form-group textarea:focus { outline: none; border-color: var(--brown-accent); }
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.45); }
+    .form-group textarea:focus {
+      outline: none; border-color: var(--brown-accent);
+      background: rgba(255,255,255,0.10);
+    }
 
     .kirim-btn {
-      width: 100%; padding: 13px;
-      background: var(--brown-accent); border: none; border-radius: 3px;
+      width: 100%; padding: 14px;
+      background: var(--brown-accent); border: none; border-radius: 4px;
       color: white; font-family: 'Jost', sans-serif;
       font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      cursor: pointer; transition: all 0.3s; margin-top: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      margin-top: 4px;
     }
-    .kirim-btn:hover { background: var(--brown-light); color: #2e1f14; }
+    .kirim-btn:hover {
+      background: var(--brown-light);
+      color: #2e1f14;
+      transform: translateY(-2px);
+    }
 
-    /* ─── UCAPAN ─── */
+    /* ── UCAPAN ── */
     .ucapan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
     .ucapan-card {
       padding: 16px 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 3px; animation: fadeUp 0.5s ease;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 4px;
+      animation: fadeUp 0.5s ease;
     }
-    .ucapan-card h4 { font-size: 12px; font-weight: 400; margin-bottom: 5px; color: var(--brown-light); }
-    .ucapan-card p { font-size: 12px; color: var(--text-muted); line-height: 1.75; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .ucapan-card h4 {
+      font-size: 12px; font-weight: 400; margin-bottom: 6px; color: var(--brown-light);
+    }
+    /* [2] ucapan text lebih terbaca */
+    .ucapan-card p {
+      font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.8;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-    /* ─── WEDDING GIFT ─── */
-    .angpao-desc { font-size: 12px; color: var(--text-muted); line-height: 1.9; text-align: center; margin-bottom: 22px; }
-    .bank-card {
-      padding: 18px 20px; margin-bottom: 10px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07); border-radius: 3px;
+    /* ── WEDDING GIFT ── */
+    /* [4] angpao-desc tengah */
+    .angpao-desc {
+      font-size: 13px; color: rgba(255,255,255,0.78); line-height: 2.0;
+      text-align: center; margin-bottom: 22px;
     }
-    .bank-nama { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
+    .bank-card {
+      padding: 20px 22px; margin-bottom: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 4px;
+    }
+    .bank-nama {
+      font-size: 11px; color: rgba(255,255,255,0.62); margin-bottom: 4px;
+    }
     .bank-nomor {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22px; color: var(--brown-light); letter-spacing: 1px;
+      font-size: 24px; color: var(--brown-light); letter-spacing: 1px;
     }
-    .bank-atas { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .bank-atas {
+      font-size: 11px; color: rgba(255,255,255,0.62); margin-top: 3px;
+    }
     .salin-btn {
-      margin-top: 10px; padding: 6px 14px;
-      border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
-      background: transparent; color: var(--text-muted);
+      margin-top: 12px; padding: 6px 16px;
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 20px;
+      background: transparent; color: rgba(255,255,255,0.65);
       font-family: 'Jost', sans-serif; font-size: 10px; letter-spacing: 1px;
-      cursor: pointer; transition: all 0.3s;
+      cursor: pointer;
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
     }
-    .salin-btn:hover { color: white; border-color: rgba(255,255,255,0.28); }
+    .salin-btn:hover {
+      color: white;
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.06);
+    }
 
-    /* ─── PENUTUP ─── */
-    .penutup-section { padding: 70px 44px; text-align: center; }
+    /* ── PENUTUP ── */
+    .penutup-section {
+      padding: 72px 44px; text-align: center;
+      background: rgba(8,4,2,0.72);
+      backdrop-filter: blur(6px);
+      position: relative; z-index: 3;
+    }
     .penutup-section h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 38px; font-weight: 300; margin-bottom: 18px;
+      font-size: 40px; font-weight: 300; margin-bottom: 20px;
+      text-shadow: 0 3px 14px rgba(0,0,0,0.45);
     }
+    /* [2] pesan penutup lebih terbaca */
     .penutup-section p {
-      font-size: 12px; color: var(--text-muted); line-height: 2.1;
-      max-width: 300px; margin: 0 auto 26px;
+      font-size: 13px; color: rgba(255,255,255,0.78); line-height: 2.2;
+      max-width: 300px; margin: 0 auto 28px;
     }
     .penutup-section h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22px; font-weight: 300; color: var(--brown-light);
+      font-size: 24px; font-weight: 300; color: var(--brown-light);
     }
     .footer {
-      padding: 18px 44px; text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      font-size: 9px; color: rgba(255,255,255,0.16); letter-spacing: 2px;
+      padding: 20px 44px; text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 9px; color: rgba(255,255,255,0.20); letter-spacing: 2px;
+      background: rgba(8,4,2,0.72);
+      position: relative; z-index: 3;
     }
 
-    /* ─── MUSIC BTN ─── */
+    /* ── MUSIC BTN ── */
     .music-btn {
       position: fixed; right: 20px; bottom: 20px; z-index: 50;
       width: 46px; height: 46px; border-radius: 50%;
       background: var(--brown-accent); border: none;
       color: white; font-size: 16px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5); transition: transform 0.3s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
     }
     .music-btn:hover { transform: scale(1.1); }
     .music-btn.playing { animation: pulse 2s infinite; }
     @keyframes pulse {
-      0%   { box-shadow: 0 0 0 0   rgba(138,106,80,0.5); }
-      70%  { box-shadow: 0 0 0 10px rgba(138,106,80,0); }
+      0%   { box-shadow: 0 0 0 0   rgba(138,106,80,0.55); }
+      70%  { box-shadow: 0 0 0 12px rgba(138,106,80,0); }
       100% { box-shadow: 0 0 0 0   rgba(138,106,80,0); }
     }
 
-    /* ─── TOAST ─── */
+    /* ── TOAST ── */
     .toast {
       position: fixed; bottom: 78px; right: 20px; z-index: 200;
       background: var(--brown-accent); color: white;
-      padding: 10px 20px; border-radius: 40px;
+      padding: 10px 22px; border-radius: 40px;
       font-size: 11px; letter-spacing: 1px;
-      opacity: 0; transform: translateY(8px);
-      transition: all 0.4s; pointer-events: none;
+      opacity: 0; transform: translateY(10px);
+      transition: all 0.4s ease; pointer-events: none;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
 
-    /* ─── FADE-UP ─── */
-    .fade-up { opacity: 0; transform: translateY(26px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    /* ── FADE-UP scroll reveal ── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.80s ease, transform 0.80s ease;
+    }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* ─── MOBILE ─── */
+    /* ═══════════════════════════════════════
+       MOBILE
+    ═══════════════════════════════════════ */
     @media (max-width: 768px) {
-
       body { overflow: auto; }
-
       #coverScreen { flex-direction: column; }
 
-      /* [2] Mobile: posisi foto cover lebih presisi */
-      .cover-bg img {
-        object-position: 10% center;
-      }
+      /* [2] Mobile: posisi subjek foto lebih presisi */
+      .cover-bg img { object-position: 28% center; height: 100vh; }
 
-      .cover-content {
-        padding: 48px 32px;
-        max-width: 100%;
-      }
+      .cover-content { padding: 48px 32px; max-width: 100%; min-height: 100vh; justify-content: center;}
 
-      #mainApp {
-        flex-direction: column;
-        height: auto;
-      }
+      #mainApp { flex-direction: column; height: auto; }
 
       .left-panel { display: none; }
 
       .right-panel {
-        position: relative;
-        width: 100%;
-        min-height: 100vh;
-        background: transparent;
+        position: relative; width: 100%;
+        min-height: 100vh; background: transparent;
       }
 
       .right-panel::before {
         content: '';
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
+        position: fixed; inset: 0; width: 100%; height: 100%;
         background:
-          linear-gradient(rgba(15,8,4,0.45), rgba(15,8,4,0.70)),
+          linear-gradient(rgba(8,4,2,0.62), rgba(8,4,2,0.78)),
           url('assets/images/DalamKanan.jpeg');
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
         z-index: -1;
       }
-
       .right-panel::after { display: none; }
 
       .right-hero-photo {
-        height: 100vh;
-        background: transparent;
-        position: relative;
-        filter: none;
-        transform: none;
+        height: 100vh; background: transparent;
+        position: relative; filter: none; transform: none;
       }
-
       .hero-overlay {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%;
-        height: 100vh;
+        position: absolute; top: 0; left: 0;
+        width: 100%; height: 100vh;
         padding: 40px 28px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background: rgba(10,5,2,0.40);
-        backdrop-filter: none;
-        z-index: 2;
+        display: flex; flex-direction: column;
+        justify-content: center; align-items: center; text-align: center;
+        background: rgba(8,4,2,0.45);
+        backdrop-filter: none; z-index: 2;
       }
-
       .hero-names { font-size: 52px; line-height: 0.95; }
-      .hero-sub { margin-top: 16px; }
-      .countdown { margin-top: 28px; }
+      .hero-sub { margin-top: 18px; }
+      .countdown { margin-top: 30px; }
 
-      .section,
-      .penutup-section { padding: 50px 26px; }
-
+      .section, .penutup-section { padding: 52px 26px; }
       .footer { padding: 18px 26px; }
-
-    } /* ← tutup @media */
+    }
   </style>
 </head>
 <body>
@@ -787,7 +855,6 @@
         <strong>Jumat, 26 Juni 2026</strong>
       </p>
 
-      <!-- Akad -->
       <div class="event-block">
         <div class="event-label">01 · Akad Nikah</div>
         <div class="event-name">Akad Nikah</div>
@@ -809,7 +876,6 @@
         </a>
       </div>
 
-      <!-- Resepsi -->
       <div class="event-block">
         <div class="event-label">02 · Resepsi</div>
         <div class="event-name">Resepsi Pernikahan</div>
@@ -829,7 +895,6 @@
           </svg>
           Buka Google Maps
         </a>
-
         <div class="dresscode-box">
           <div class="dc-title">Dress Code :</div>
           <div class="dc-desc">Kami memohon kehadiran dengan mengenakan warna-warna berikut</div>
