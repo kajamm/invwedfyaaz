@@ -383,8 +383,15 @@
 
     /* ── CERITA ── */
     .story-text {
-      font-size: 13px; line-height: 2.2; color: rgba(255,255,255,0.78);
-      font-style: italic; margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 2;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 22px;
+
+      text-align: justify;
+
+      font-weight: 300;
+      letter-spacing: 0.2px;
     }
 
     /* ── GALLERY POLAROID ── */
@@ -412,7 +419,7 @@
       padding: 8px 8px 28px 8px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5);
       /* FIX: lebar dalam % dari gallery-grid (yang sudah diperlebar oleh margin negatif) */
-      width: 60%;
+      width: 280px;
       flex-shrink: 0;
       scroll-snap-align: start;
       transition: transform 0.4s ease;
@@ -702,7 +709,7 @@
     .fade-up:nth-child(even) {
       opacity: 0;
       transform: translateX(40px);
-      transition: opacity 7.0ms cubic-bezier(0.22, 1, 0.36, 1),
+      transition: opacity 7.0s cubic-bezier(0.22, 1, 0.36, 1),
                   transform 7.0s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -974,42 +981,40 @@
       <h2 class="sec-title">Cerita Kami</h2>
     <div class="story-wrapper">
       <p class="story-text">
-        Pertemuan yang tak terduga, dipertemukan oleh semesta tanpa sengaja. 
+        Dipertemukan oleh semesta tanpa sengaja. 
         Dimulai dari bertukar cerita hingga tumbuh perasaan dengan komitmen 
         yang tinggi di awal pertemuan, Taman Hutan Raya Juanda adalah media 
         yang mempertemukan kami dengan banyak cerita di dalamnya.
       </p>
 
       <p class="story-text">
-        Kemudian di pertemuan pertama, setelah cukup saling mengenal, 
-        kami berkomitmen untuk langsung melangkah ke jenjang pernikahan 
-        dan melakukan persiapan.
+        Setelah mengenal selama beberapa minggu 
+        kami memutuskan untuk bertemu secara langsung yang pertama kalinya 
+        pada 2 Mei 2024 di Bandung, 
       </p>
 
       <p class="story-text">
-        Pada saat bertemu secara langsung untuk pertama kalinya pada 
-        2 Mei 2024 di Bandung, sebuah cincin sebagai tanda komitmen awal 
-        kami sudah melingkar di jari. Mulai bulan Mei itu pula, kami aktif 
-        berkomunikasi dengan keluarga, melakukan pendekatan, dan mengenali 
-        keluarga satu sama lain.
+        Cukup mengejutkan karena diawal pertemuan secara langsung itu sebuah cincin sebagai tanda komitmen awal sudah melingkar di jari.
       </p>
 
       <p class="story-text">
-        Dalam proses komunikasi tersebut, qadarullah Allah menghendaki kami 
-        untuk resmi menetapkan tanggal pernikahan pada 31 Januari 2026 
-        saat prosesi lamaran, hingga akhirnya kami bisa menyelenggarakan 
-        pernikahan ini sesuai dengan impian pernikahan kami.
+        Mulai bulan Mei itu pula, kami aktif berkomunikasi dengan keluarga, melakukan pendekatan, dan mengenali keluarga satu sama lain.
+      </p>
+
+      <p class="story-text">
+        Dalam proses komunikasi tersebut, Qadarullah Allah menghendaki kami untuk resmi menetapkan tanggal pernikahan pada 26 Juni 2026 yang diresmikan saat prosesi lamaran, hingga akhirnya kami bisa menyelenggarakan pernikahan ini sesuai dengan impian pernikahan kami.
       </p>
     </div>
       <div class="gallery-wrapper">
         <div class="gallery-grid" id="galleryGrid">
           <div class="polaroid">
-            <img src="assets/images/G15.jpg" style="object-position: center right;" onerror="this.src='https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80'" alt="">
+            <img src="assets/images/G15.jpeg" style="object-position: center right;" onerror="this.src='https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80'" alt="">
           </div>
           <div class="polaroid">
             <img src="assets/images/G9.jpg" style="object-position: center top;" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80'" alt="">
           </div>
-            <img src="assets/images/G27.jpg" style="object-position: center top;" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80'" alt="">
+          <div class="polaroid">
+            <img src="assets/images/G27.jpeg" style="object-position: center top;" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80'" alt="">
           </div>
           <div class="polaroid">
             <img src="assets/images/G10.jpg" style="object-position: center top;" onerror="this.src='https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=600&q=80'" alt="">
