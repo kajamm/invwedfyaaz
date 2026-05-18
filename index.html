@@ -1162,13 +1162,26 @@
   let isPlaying  = false;
 
   /* FIX: visibilitychange di luar openBtn listener */
+  let wasPlayingBeforeHidden = false;
+
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden && isPlaying) {
-      music.pause();
-      isPlaying = false;
-      musicBtn.textContent = '▶';
-      musicBtn.classList.remove('playing');
+
+    if (document.hidden) {
+
+      wasPlayingBeforeHidden = isPlaying;
+
+      if (isPlaying) {
+        music.pause();
+      }
+
+    } else {
+
+      if (wasPlayingBeforeHidden) {
+        music.play().catch(() => {});
+      }
+
     }
+
   });
 
   document.getElementById('openBtn').addEventListener('click', () => {
@@ -1222,7 +1235,7 @@
       hadir: document.getElementById('rHadir').value
     };
     try {
-      await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
       tampilToast('Konfirmasi kehadiran terkirim ✓');
       e.target.reset();
     } catch (err) {
@@ -1236,21 +1249,36 @@
     const nama  = document.getElementById('wNama').value.trim();
     const pesan = document.getElementById('wPesan').value.trim();
     if (!nama || !pesan) return;
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'Wishes', nama, pesan })
-      });
-      tampilToast('Ucapan terkirim ✓');
-      e.target.reset();
+    const list = document.getElementById('ucapanList');
+     /* tampil instant */
+    const card = document.createElement('div');
+    card.className = 'ucapan-card';
+    card.innerHTML = `
+    <h4>${nama}</h4>
+    <p>${pesan}</p>
+  `;
+    list.prepend(card);
+    tampilToast('Ucapan terkirim ✓');
+    e.target.reset();
+    /* save background */
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        type: 'Wishes',
+        nama,
+        pesan
+      })
+    })
+    .then(() => {
+       /* sync ulang setelah sheet selesai */
+       setTimeout(() => {
       loadUcapan();
-    } catch (err) {
-      tampilToast('Gagal mengirim ucapan');
-    }
+    }, 2000);
+    });
   });
 
-  async function loadUcapan() {
-    try {
+    async function loadUcapan() {
+      try {
       const res  = await fetch(SCRIPT_URL);
       const data = await res.json();
       const list = document.getElementById('ucapanList');
