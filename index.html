@@ -1065,11 +1065,11 @@
   }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.fade-up, .gallery-grid').forEach(el => observer.observe(el));
-  const hash = window.location.hash.slice(1);
-  const namaTamu = hash ? atob(hash) : '';
-  if (namaTamu) {
-    document.getElementById('guestName').textContent = namaTamu;
-  }
+const urlParams = new URLSearchParams(window.location.search);
+const namaTamu = urlParams.get('to');
+if (namaTamu) {
+  document.getElementById('guestName').textContent = namaTamu;
+}
 </script>
 </body>
 </html>
