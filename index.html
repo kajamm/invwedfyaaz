@@ -942,6 +942,16 @@
     }
   });
 
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (
+      e.key === 'F12' ||
+      (e.ctrlKey && ['u','s','a'].includes(e.key.toLowerCase())) ||
+      (e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase()))
+    ) {
+      e.preventDefault();
+    }
+  });
   document.getElementById('openBtn').addEventListener('click', () => {
     document.getElementById('coverScreen').classList.add('hidden');
     document.getElementById('mainApp').classList.add('visible');
